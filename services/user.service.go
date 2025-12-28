@@ -2,10 +2,18 @@ package services
 
 import (
 	"go-crud-api/models"
+	"go-crud-api/utils"
 	"go-crud-api/repositories"
 )
 
 func CreateUser(user *models.User) error {
+	// 🔐 Hash password
+	hashedPassword, err := utils.HashPassword(user.Password)
+	if err != nil {
+		return err
+	}
+
+	user.Password = hashedPassword
 	return repositories.CreateUser(user)
 }
 
